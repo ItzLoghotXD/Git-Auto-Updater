@@ -53,6 +53,7 @@ class GitAutoUpdater:
                 subprocess.run(["git", "commit", "-m", self.commit_message], check=True)
                 print(Style.BRIGHT + Fore.GREEN + "Committed changes!" + Style.RESET_ALL)
             except subprocess.CalledProcessError:
+                print(Style.BRIGHT + Fore.GREEN + "nothing to commit, working tree clean" + Style.RESET_ALL)
                 pass
 
             # Push changes to the remote repository
