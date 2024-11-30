@@ -42,23 +42,24 @@ class GitAutoUpdater:
         try:
             os.chdir(self.repo_path)
 
-            # Stage files/folders dynamically
-            print(Fore.CYAN + "Staging changes..." + Style.RESET_ALL)
+            # Stage all changes
+            print(Style.BRIGHT + Fore.CYAN + "\nStaging changes..." + Fore.BLUE)
             subprocess.run(["git", "add"] + self.contents.split(","), check=True)
-            print(Fore.GREEN + "Staged all changes!" + Style.RESET_ALL)
+            print(Style.BRIGHT + Fore.GREEN + "Staged all changes!" + Style.RESET_ALL)
 
-            # Commit with a custom or default message
+            # Commit changes
+            print(Style.BRIGHT + Fore.CYAN + "\nCommitting changes..." + Fore.BLUE)
             subprocess.run(["git", "commit", "-m", self.commit_message], check=True)
-            print(Fore.GREEN + "Committed changes!" + Style.RESET_ALL)
+            print(Style.BRIGHT + Fore.GREEN + "Committed changes!" + Style.RESET_ALL)
 
             # Push changes to the remote repository
+            print(Style.BRIGHT + Fore.CYAN + "\nPushing to github..." + Fore.BLUE)
             subprocess.run(["git", "push"], check=True)
-            print(Fore.GREEN + "Pushed changes to GitHub!" + Style.RESET_ALL)
-
+            print(Style.BRIGHT + Fore.GREEN + "Pushed changes to GitHub!" + Style.RESET_ALL)
         except subprocess.CalledProcessError as e:
-            print(Fore.RED + f"Git command failed: {e}" + Style.RESET_ALL)
+            print(Style.BRIGHT + Fore.RED + f"\nGit command failed: {e}\n" + Style.RESET_ALL)
         except Exception as e:
-            print(Fore.RED + f"Error: {e}" + Style.RESET_ALL)
+            print(Style.BRIGHT + Fore.RED + f"\nError: {e}\n" + Style.RESET_ALL)
 
     def listen_for_shortcut(self):
         """Listen for the user-defined shortcut."""
