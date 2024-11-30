@@ -1,0 +1,50 @@
+import os
+import subprocess
+from colorama import Fore, Style
+import keyboard  
+
+# Configuration
+REPO_PATH = r"path/to/local/repo" # F:/github/test_repo
+COMMIT_MESSAGE = "Auto-updated"
+
+class GitAutoUpdater:
+    def __init__(self):
+        pass
+
+    def listen_for_shortcut(self):
+        # Listen for "Ctrl+Shift+P" 
+        print(Fore.GREEN + Style.BRIGHT + "Listening for 'Ctrl+Shift+P'...")
+        print("press Esc+CTRL to exit" + Style.RESET_ALL)
+        keyboard.add_hotkey('ctrl+shift+p', self.update_repo)
+        keyboard.wait('esc+ctrl')  # Wait indefinitely until 'esc' is pressed to exit
+
+    def update_repo(self):
+        try:
+            # Change directory to the repository
+            os.chdir(REPO_PATH)
+            
+            # Stage all changes
+            print(Style.BRIGHT + Fore.CYAN + "\nStaging changes..." + Fore.BLUE)
+            subprocess.run(["git", "add", "folder", "file"], check=True) # add what ever file you want
+            print(Style.BRIGHT + Fore.GREEN + "Staged all changes!" + Style.RESET_ALL)
+
+            # Commit changes
+            print(Style.BRIGHT + Fore.CYAN + "\nCommitting changes..." + Fore.BLUE)
+            subprocess.run(["git", "commit", "-m", COMMIT_MESSAGE], check=True)
+            print(Style.BRIGHT + Fore.GREEN + "Committed changes!" + Style.RESET_ALL)
+
+            # Push changes to the remote repository
+            print(Style.BRIGHT + Fore.CYAN + "\nPushing to github..." + Fore.BLUE)
+            subprocess.run(["git", "push"], check=True)
+            print(Style.BRIGHT + Fore.GREEN + "Pushed changes to GitHub!" + Style.RESET_ALL)
+        except subprocess.CalledProcessError as e:
+            print(Style.BRIGHT + Fore.RED + f"\nGit command failed: {e}\n" + Style.RESET_ALL)
+        except Exception as e:
+            print(Style.BRIGHT + Fore.RED + f"\nError: {e}\n" + Style.RESET_ALL)
+
+def main():
+    updater = GitAutoUpdater()
+    updater.listen_for_shortcut()
+
+if __name__ == "__main__":
+    main()
