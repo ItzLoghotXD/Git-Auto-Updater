@@ -5,11 +5,12 @@ from colorama import Fore, Style
 import keyboard
 
 # Configuration File Path
-CONFIG_FILE = "config.yaml"
+CONFIG_FILE = "config.yml"
 
 DEFAULT_CONFIG = {
     "repo_path": "path/to/local/repo",
-    "commit_message": "Auto-updated",
+    "auto_commit_message": "Auto-updated",
+    "custom_commit_message": "false",
     "shortcut": "ctrl+shift+p",
     "contents": "."
 }
@@ -18,7 +19,8 @@ class GitAutoUpdater:
     def __init__(self):
         self.config = self.load_config()
         self.repo_path = self.config["repo_path"]
-        self.commit_message = self.config["commit_message"]
+        self.auto_commit_message = self.config["auto_commit_message"]
+        self.custom_commit_message = self.config["custom_commit_message"]
         self.shortcut = self.config["shortcut"]
         self.contents = self.config["contents"]
 
@@ -50,7 +52,11 @@ class GitAutoUpdater:
             try:
                 # Commit changes
                 print(Style.BRIGHT + Fore.CYAN + "\nCommitting changes..." + Fore.BLUE)
-                subprocess.run(["git", "commit", "-m", self.commit_message], check=True)
+                if self.custom_commit_message == False:
+                    subprocess.run(["git", "commit", "-m", self.auto_commit_message], check=True)
+                else:
+                    msg = input("Enter Commit message: ")
+                    subprocess.run(["git", "commit", "-m", msg], check=True)
                 print(Style.BRIGHT + Fore.GREEN + "Committed changes!" + Style.RESET_ALL)
             except subprocess.CalledProcessError:
                 print(Style.BRIGHT + Fore.GREEN + "Nothing to commit!" + Style.RESET_ALL)
@@ -87,7 +93,7 @@ def main():
 
     print(Fore.GREEN + "Configuration loaded from 'config.yaml':")
     print(Fore.YELLOW + f"- Repository Path: {updater.repo_path}")
-    print(f"- Commit Message: {updater.commit_message}")
+    print(f"- Commit Message: {updater.auto_commit_message}")
     print(f"- Shortcut: {updater.shortcut}" + Style.RESET_ALL)
 
     print(Fore.BLUE + "\nStarting Git Auto-Updater..." + Style.RESET_ALL)
