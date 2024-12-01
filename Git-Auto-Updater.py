@@ -10,7 +10,7 @@ CONFIG_FILE = "config.yml"
 DEFAULT_CONFIG = {
     "repo_path": "path/to/local/repo",
     "auto_commit_message": "Auto-updated",
-    "custom_commit_message": "false",
+    "custom_commit_message": False,
     "shortcut": "ctrl+shift+p",
     "contents": "."
 }
